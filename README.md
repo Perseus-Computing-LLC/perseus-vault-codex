@@ -41,12 +41,21 @@ it and any Codex session gains five memory tools:
 
 ```bash
 # 1. Install the wrapper (zero Python dependencies)
-pip install perseus-vault-codex
+pip install perseus-vault-codex            # from PyPI, or from source (below)
 
 # 2. Install the Perseus Vault binary (single static binary, no deps) and put it on PATH
 #    https://github.com/Perseus-Computing-LLC/perseus-vault/releases
 
 # 3. Register it with Codex (non-destructive; backs up your config)
+perseus-vault-codex-setup
+```
+
+**Install from source (works today, before the PyPI release):**
+
+```bash
+git clone https://github.com/Perseus-Computing-LLC/perseus-vault-codex
+cd perseus-vault-codex
+pip install -e .
 perseus-vault-codex-setup
 ```
 
