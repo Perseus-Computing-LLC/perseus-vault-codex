@@ -116,6 +116,10 @@ OpenAI Codex, GPT-5.6.
 - Zero runtime Python dependencies — the whole wrapper is self-contained.
 - A real, non-trivial MCP integration with a 31-test suite, verified end-to-end
   against the real Perseus Vault binary.
+- **Measured benchmarks, not claims** (`benchmarks/`): recall at **p50 8 ms /
+  5-of-5 recall@10 on a 10k-memory corpus**, and a **72.5% context-token
+  reduction** over a 30-session horizon vs. re-priming each session — every
+  figure measured against the real binary or labeled as a stated assumption.
 
 ## What we learned
 

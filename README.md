@@ -130,6 +130,25 @@ package collapses them into five verbs a coding agent can reason about, and the
 binary does the encrypted storage and retrieval. Full write-up:
 [`docs/architecture.md`](docs/architecture.md).
 
+## Benchmarks
+
+Measured against the real `perseus-vault` binary (v2.17.0), encrypted at rest —
+full methodology and reproducible harness in [`benchmarks/`](benchmarks/):
+
+- **Recall is fast and accurate at scale.** Seeding 10,000 developer memories,
+  recall runs at **p50 8 ms / p95 13 ms** with **5/5 recall@10** on distinctive
+  needle memories (1,000-memory corpus: p50 1.4 ms). The recall hot path — what a
+  Codex agent hits every task — stays in single/low-double-digit milliseconds.
+- **Persistent memory cuts context tokens ~72%.** Over a 30-session horizon,
+  recalling the top-k relevant memories per task uses **110,512 fewer tokens
+  (72.5% reduction)** than re-priming each new session with the full project
+  knowledge base — per-unit token costs measured with tiktoken against real vault
+  recalls.
+
+Every number is measured or explicitly labeled as a stated assumption; nothing is
+hardcoded. Reproduce with `python benchmarks/bench_recall.py` and
+`python benchmarks/bench_token_savings.py`.
+
 ## How Codex + GPT-5.6 built this
 
 This integration was built **with Codex during OpenAI Build Week**, and Codex

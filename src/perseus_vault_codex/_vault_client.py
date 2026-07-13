@@ -199,6 +199,10 @@ class VaultClient:
                         f"perseus-vault did not respond to {method} in {self._timeout}s"
                     )
                 if line == "":
+                    # A live process can close stdout before it exits.  Do not
+                    # retain that unusable process: the next call must be able
+                    # to start a fresh vault instead of seeing EOF forever.
+                    self._teardown()
                     raise VaultError("perseus-vault closed stdout unexpectedly")
                 line = line.strip()
                 if not line:

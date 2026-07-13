@@ -1,0 +1,45 @@
+{
+  "benchmark": "recall_latency_and_accuracy",
+  "engine": "perseus-vault",
+  "binary_version": "perseus-vault 2.17.0",
+  "encrypted_at_rest": true,
+  "seed": 1729,
+  "queries_per_size": 200,
+  "data_source": "measured",
+  "results": [
+    {
+      "size": 1000,
+      "entities_stored": 1000,
+      "ingest_seconds": 0.808,
+      "ingest_per_sec": 1238.3,
+      "recall_queries": 200,
+      "recall_latency_ms": {
+        "p50": 1.363,
+        "p95": 10.624,
+        "p99": 12.413,
+        "mean": 1.944,
+        "max": 13.111
+      },
+      "needles": 5,
+      "recall_at_10": "5/5",
+      "recall_at_10_frac": 1.0
+    },
+    {
+      "size": 10000,
+      "entities_stored": 10000,
+      "ingest_seconds": 52.813,
+      "ingest_per_sec": 189.3,
+      "recall_queries": 200,
+      "recall_latency_ms": {
+        "p50": 8.029,
+        "p95": 12.852,
+        "p99": 14.163,
+        "mean": 8.351,
+        "max": 14.976
+      },
+      "needles": 5,
+      "recall_at_10": "5/5",
+      "recall_at_10_frac": 1.0
+    }
+  ]
+}
