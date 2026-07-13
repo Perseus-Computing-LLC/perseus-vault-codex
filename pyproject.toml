@@ -40,3 +40,7 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Put the repo root on sys.path so `from tests.conftest import ...` resolves
+# under the bare `pytest` console script (which, unlike `python -m pytest`,
+# does not add the CWD to sys.path).
+pythonpath = ["."]
