@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.venv/
+venv/
+
+# Perseus Vault local state (never commit memories or keys)
+*.db
+*.db-wal
+*.db-shm
+*.key
+.perseus-vault/
+
+# OS
+.DS_Store
+Thumbs.db

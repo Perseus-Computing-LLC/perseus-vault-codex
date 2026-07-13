@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "perseus-vault-codex"
+version = "0.1.0"
+description = "Persistent, encrypted, local-first memory for OpenAI Codex agents — a 5-tool MCP server wrapping Perseus Vault."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Thomas Connally", email = "perseus@perseus.observer" }]
+keywords = ["codex", "mcp", "memory", "openai", "gpt-5.6", "agent", "encrypted", "local-first", "perseus", "vault"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+# Zero runtime dependencies: the stdio transport is vendored, and the vault is a
+# single external binary. Only the perseus-vault binary needs to be on PATH.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://perseus.observer"
+Repository = "https://github.com/Perseus-Computing-LLC/perseus-vault-codex"
+"Perseus Vault" = "https://github.com/Perseus-Computing-LLC/perseus-vault"
+
+[project.scripts]
+perseus-vault-codex = "perseus_vault_codex.server:main"
+perseus-vault-codex-setup = "perseus_vault_codex.install:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

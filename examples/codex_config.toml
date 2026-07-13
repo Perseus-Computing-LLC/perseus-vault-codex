@@ -1,0 +1,23 @@
+# Perseus Vault memory for Codex — add this to ~/.codex/config.toml
+#
+# `perseus-vault-codex-setup` writes this stanza for you (non-destructively,
+# with a backup). This file shows what it produces so you can add it by hand.
+
+[mcp_servers.perseus-vault]
+command = "perseus-vault-codex"
+args = []
+
+# Optional environment for the server:
+[mcp_servers.perseus-vault.env]
+# Pin the vault binary if it isn't on PATH:
+# PERSEUS_VAULT_BIN = "/usr/local/bin/perseus-vault"
+#
+# Where the encrypted memory database lives (default ~/.perseus-vault/codex/memory.db):
+# PERSEUS_VAULT_CODEX_DB = "/home/you/.perseus-vault/codex/memory.db"
+#
+# Enable `perseus_reflect` LLM synthesis with your OpenAI key + GPT-5.6:
+# OPENAI_API_KEY = "sk-..."
+# OPENAI_MODEL = "gpt-5.6"
+#
+# Encryption at rest is ON by default. To disable (not recommended):
+# PERSEUS_VAULT_CODEX_ENCRYPT = "0"
