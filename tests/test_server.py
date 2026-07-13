@@ -87,6 +87,15 @@ def test_unknown_method_returns_method_not_found(fake_config):
     assert resp["error"]["code"] == -32601
 
 
+def test_malformed_jsonrpc_request_returns_invalid_request(fake_config):
+    srv, _ = _server(fake_config)
+    resp = srv.handle(
+        {"jsonrpc": "2.0", "id": 11, "method": "tools/call", "params": []}
+    )
+    assert resp["id"] is None
+    assert resp["error"]["code"] == -32600
+
+
 def test_tool_error_becomes_jsonrpc_error_not_crash(fake_config):
     srv, _ = _server(fake_config)
     resp = srv.handle(

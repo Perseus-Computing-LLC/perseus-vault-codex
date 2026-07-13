@@ -10,15 +10,15 @@
     {
       "size": 1000,
       "entities_stored": 1000,
-      "ingest_seconds": 0.808,
-      "ingest_per_sec": 1238.3,
+      "ingest_seconds": 0.789,
+      "ingest_per_sec": 1267.0,
       "recall_queries": 200,
       "recall_latency_ms": {
-        "p50": 1.363,
-        "p95": 10.624,
-        "p99": 12.413,
-        "mean": 1.944,
-        "max": 13.111
+        "p50": 1.276,
+        "p95": 11.009,
+        "p99": 12.385,
+        "mean": 1.852,
+        "max": 12.964
       },
       "needles": 5,
       "recall_at_10": "5/5",
@@ -27,15 +27,15 @@
     {
       "size": 10000,
       "entities_stored": 10000,
-      "ingest_seconds": 52.813,
-      "ingest_per_sec": 189.3,
+      "ingest_seconds": 41.902,
+      "ingest_per_sec": 238.7,
       "recall_queries": 200,
       "recall_latency_ms": {
-        "p50": 8.029,
-        "p95": 12.852,
-        "p99": 14.163,
-        "mean": 8.351,
-        "max": 14.976
+        "p50": 7.376,
+        "p95": 26.701,
+        "p99": 36.62,
+        "mean": 9.074,
+        "max": 38.573
       },
       "needles": 5,
       "recall_at_10": "5/5",

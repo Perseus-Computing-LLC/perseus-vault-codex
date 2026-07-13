@@ -149,37 +149,18 @@ Every number is measured or explicitly labeled as a stated assumption; nothing i
 hardcoded. Reproduce with `python benchmarks/bench_recall.py` and
 `python benchmarks/bench_token_savings.py`.
 
-## How Codex + GPT-5.6 built this
+## How Codex was used
 
-This integration was built **with Codex during OpenAI Build Week**, and Codex
-is genuinely load-bearing in the workflow — not a footnote:
+Codex was used during Build Week as an implementation and verification partner.
+In the final review session, it read the complete wrapper and its tests, ran the
+suite against the real `perseus-vault 2.17.0` binary, exercised the two-session
+demo, and checked a unique marker was absent from the raw default database file.
+It also hardened stdout-EOF recovery in the subprocess client and added a
+regression test. Those are review-session contributions; this README does not
+attribute all pre-existing code to that session.
 
-- **Scaffolding in one prompt.** Codex generated the MCP server skeleton — the
-  JSON-RPC stdio loop, `initialize`/`tools/list`/`tools/call` dispatch, and the
-  content/`structuredContent` envelope — from a single prompt describing the
-  five-tool surface. That became `server.py`.
-- **Protocol implementation.** Codex implemented the tricky parts of the MCP
-  stdio transport: newline-delimited framing, the reentrant-lock handshake, and
-  deadline-bounded reads with subprocess teardown so a hung vault can never wedge
-  a session (`_vault_client.py`).
-- **Tool translation.** Codex wrote the mapping from the five curated verbs onto
-  Perseus Vault's underlying tools, including the recall-result normalization and
-  the idempotent-key remember semantics (`tools.py`).
-- **Test suite.** Codex produced the fake-vault fixture and the 31-test suite —
-  protocol-level server tests, tool-translation tests, the config installer
-  merge tests, and the real-binary integration tests (including the
-  encryption-at-rest proof that plaintext never hits disk).
-- **GPT-5.6 for the hard calls.** GPT-5.6 drove the architecture decisions
-  (two-hop MCP design; five verbs, not fifty-five; lazy vault start so
-  `tools/list` never blocks) and debugged the stdio lifecycle — specifically the
-  "child accepts stdin but never emits a newline" hang, which is why reads are
-  deadline-bounded on a daemon thread.
-- **GPT-5.6 powers `perseus_reflect`.** The same model the agent runs on becomes
-  the synthesis engine: `reflect` recalls grounding memories and asks GPT-5.6 for
-  a cited answer.
-
-The session where the core was built is referenced in
-[`SUBMISSION.md`](SUBMISSION.md).
+See [`SUBMISSION.md`](SUBMISSION.md) for the precise verification record and
+benchmark caveats.
 
 ## Development
 

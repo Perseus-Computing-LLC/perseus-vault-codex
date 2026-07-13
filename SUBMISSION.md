@@ -62,31 +62,31 @@ One command wires it into Codex: `perseus-vault-codex-setup`.
 
 ## How we built it — and how Codex + GPT-5.6 were used
 
-The integration was built **with Codex during Build Week**. Codex was
-load-bearing, not decorative:
+Codex was used as an implementation and verification partner during Build Week.
+This final review session does not claim authorship of the pre-existing core; it
+read the complete implementation and test suite, then independently exercised
+and hardened it.
 
-- **Scaffolding in one prompt.** Codex generated the MCP server skeleton — the
-  JSON-RPC stdio loop, the `initialize` / `tools/list` / `tools/call` dispatch,
-  and the MCP content/`structuredContent` envelope — from a single prompt
-  describing the five-tool surface (`server.py`).
-- **Protocol implementation.** Codex implemented the MCP stdio transport:
-  newline-delimited JSON-RPC framing, a reentrant-lock handshake, and
-  deadline-bounded reads with subprocess teardown so a hung vault can never wedge
-  the session (`_vault_client.py`).
-- **Tool translation.** Codex wrote the mapping from five curated verbs onto
-  Perseus Vault's 55+ underlying tools, plus recall-result normalization and
-  idempotent-key remember semantics (`tools.py`).
-- **The test suite.** Codex produced the fake-vault fixture and a 31-test suite:
-  protocol-level server tests, tool-translation tests, config-installer merge
-  tests, and real-binary integration tests — including the encryption-at-rest
-  proof that memory plaintext never touches disk.
-- **GPT-5.6 for architecture and the hard bugs.** GPT-5.6 drove the key
-  decisions — the two-hop MCP design; five verbs instead of fifty-five; lazy
-  vault start so `tools/list` never blocks Codex at startup — and debugged the
-  stdio lifecycle, specifically the "child accepts stdin but never emits a
-  newline" hang that motivated deadline-bounded reads on a daemon thread.
-- **GPT-5.6 powers the product.** `perseus_reflect` uses the same model the
-  agent runs on as its synthesis engine.
+- **Reviewed the real integration.** Codex traced the Codex-facing JSON-RPC
+  server, five-verb translation layer, zero-config setup, and the vendored client
+  that starts the `perseus-vault` subprocess.
+- **Verified, rather than assumed.** It ran all 32 tests against
+  `perseus-vault 2.17.0`, ran the two-session demo, and confirmed a memory saved
+  before a complete client teardown was recalled by a new client.
+- **Checked encryption at rest directly.** It wrote a unique marker to the
+  default `~/.perseus-vault/codex/memory.db`, read the database as raw bytes, and
+  confirmed that marker was absent before soft-deleting the audit memory.
+- **Hardened a transport edge case.** On an unexpected vault stdout EOF, the
+  client now tears down its unusable subprocess before raising. A regression test
+  confirms the next call can auto-respawn instead of repeatedly receiving EOF.
+- **Measured and challenged the benchmarks.** Codex ran the real encrypted-vault
+  benchmarks and documented their limits: latency/recall numbers apply to the
+  supplied synthetic workload; the token-savings percentage is scenario
+  modeling, not a universal observed outcome.
+
+`perseus_reflect` can use the user's configured OpenAI-compatible model to
+synthesize recalled memories; it falls back to inspectable context when no LLM
+endpoint is configured.
 
 **Built with:** Python (zero runtime deps), the Model Context Protocol (JSON-RPC
 2.0 over stdio), Perseus Vault (Rust single binary, SQLite + FTS5, AES-256-GCM),

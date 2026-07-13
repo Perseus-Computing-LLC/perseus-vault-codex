@@ -81,7 +81,19 @@ class CodexMemoryServer:
         notifications (which take no reply)."""
         method = req.get("method")
         rid = req.get("id")
-        params = req.get("params") or {}
+        params = req.get("params", {})
+        if params is None:
+            params = {}
+
+        # Reject malformed JSON-RPC before dispatching.  In particular, a
+        # scalar ``params`` used to reach _call_tool and become an opaque
+        # internal error instead of the protocol-level Invalid Request response.
+        if (
+            req.get("jsonrpc") != "2.0"
+            or not isinstance(method, str)
+            or not isinstance(params, dict)
+        ):
+            return _err(None, INVALID_REQUEST, "Invalid JSON-RPC request")
 
         # Notifications have no id and expect no response.
         is_notification = "id" not in req

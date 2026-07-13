@@ -11,12 +11,12 @@
   },
   "measured": {
     "kb_tokens_full_context": 5082,
-    "avg_tokens_per_recall": 174.8
+    "avg_tokens_per_recall": 174.9
   },
   "totals_over_horizon": {
     "reprime_baseline_tokens": 152460,
-    "recall_on_demand_tokens": 41948,
-    "tokens_saved": 110512,
+    "recall_on_demand_tokens": 41967,
+    "tokens_saved": 110493,
     "reduction_pct": 72.5
   },
   "note": "Per-unit token costs are measured against the real binary; the horizon (sessions x tasks) is a stated assumption, not a measurement."
