@@ -40,8 +40,8 @@ Verbatim from [`results/recall.json`](results/recall.json):
 
 | Corpus | Ingest (mem/s) | Recall p50 | Recall p95 | Recall p99 | recall@10 |
 |-------:|---------------:|-----------:|-----------:|-----------:|:---------:|
-| 1,000  | 1,238.3        | 1.36 ms    | 10.62 ms   | 12.41 ms   | 5/5       |
-| 10,000 | 189.3          | 8.03 ms    | 12.85 ms   | 14.16 ms   | 5/5       |
+| 1,000  | 1,267.0        | 1.28 ms    | 11.01 ms   | 12.39 ms   | 5/5       |
+| 10,000 | 238.7          | 7.38 ms    | 26.70 ms   | 36.62 ms   | 5/5       |
 
 Recall stays in the **single- to low-double-digit millisecond** range as the
 corpus grows 10×, and accuracy is **perfect (5/5)** — every needle is retrieved
@@ -56,6 +56,40 @@ the thing a Codex agent actually hits every task — does not degrade**. Seeding
 report only what we measured to completion.
 
 Numbers on your machine will differ with hardware; the shape won't.
+
+### Scale validation: 1,000,000 memories on 2× H100
+
+The numbers above are from a laptop-class local run with a keyword-friendly
+corpus. Separately, the Perseus Vault engine was validated at **1M memories** on
+a Lambda **2× H100** instance (run `#619`, DONE-marked 2026-07-12; verbatim data
+in [`results/scale_1m_2xh100.json`](results/scale_1m_2xh100.json)). This is an
+*engine-scale* result, not the laptop experience — it used a 2-GPU embedding
+fleet (nomic-embed-text, 768-dim) and a **semantic** query workload (cluster
+queries, not keyword lookups).
+
+Corpus: 1,000,000 generated → **995,562 persisted** (post-dedup), embedded with
+**0 errors**. Recall over 2,000 sampled queries:
+
+| Mode | recall@1 | recall@5 | recall@10 | p50 latency |
+|------|:--------:|:--------:|:---------:|------------:|
+| hybrid | 0.634 | **1.00** | **1.00** | 479 ms |
+| dense  | 0.262 | 0.458 | 0.532 | 126 ms |
+| fts5   | 0.001 | 0.001 | 0.003 | 61 ms |
+
+**Read this honestly:**
+- **Hybrid recall is perfect by rank 5** (recall@5 = recall@10 = 1.00) on a 1M
+  corpus — the top-1 is 0.63, so the right answer is reliably *in the set*, and
+  always within the top 5.
+- **This is a semantic workload**, so keyword-only (`fts5`) recall is near-zero —
+  the queries aren't keyword matches. Hybrid (dense + sparse fusion) is what
+  carries it. This is the opposite regime from the local table above, where the
+  needles were keyword-findable; that's why the two are reported separately
+  rather than merged.
+- **Latency is sub-second, not sub-10ms**, at 1M: hybrid p50 479 ms / p99 915 ms
+  (dense p50 126 ms). Expected — it's a dense vector scan + fusion over a million
+  vectors. Fine for an agent turn; just not the small-corpus number.
+- Seeding ran at ~267/s and embedding at ~197/s across the 2-GPU fleet — the
+  build/index path, done once.
 
 ## 2. Cross-session token savings (`bench_token_savings.py`)
 
@@ -81,10 +115,10 @@ the multiplier is yours.
 | Metric | Value |
 |---|---|
 | Full-context KB (measured) | 5,082 tokens |
-| Avg tokens per recall (measured) | 174.8 tokens |
+| Avg tokens per recall (measured) | 174.9 tokens |
 | Re-prime baseline over horizon | 152,460 tokens |
-| Recall-on-demand over horizon | 41,948 tokens |
-| **Tokens saved** | **110,512 (72.5% reduction)** |
+| Recall-on-demand over horizon | 41,967 tokens |
+| **Tokens saved** | **110,493 (72.5% reduction)** |
 
 Over a modest 30-session horizon, recall-on-demand uses **~72% fewer context
 tokens** than re-priming — and the gap widens as the knowledge base grows, since

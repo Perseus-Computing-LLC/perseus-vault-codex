@@ -70,7 +70,7 @@ and hardened it.
 - **Reviewed the real integration.** Codex traced the Codex-facing JSON-RPC
   server, five-verb translation layer, zero-config setup, and the vendored client
   that starts the `perseus-vault` subprocess.
-- **Verified, rather than assumed.** It ran all 32 tests against
+- **Verified, rather than assumed.** It ran all 33 tests against
   `perseus-vault 2.17.0`, ran the two-session demo, and confirmed a memory saved
   before a complete client teardown was recalled by a new client.
 - **Checked encryption at rest directly.** It wrote a unique marker to the
@@ -114,12 +114,17 @@ OpenAI Codex, GPT-5.6.
 - **Encryption at rest, on by default**, proven by a test that asserts memory
   plaintext never appears in the on-disk database.
 - Zero runtime Python dependencies — the whole wrapper is self-contained.
-- A real, non-trivial MCP integration with a 31-test suite, verified end-to-end
+- A real, non-trivial MCP integration with a 33-test suite, verified end-to-end
   against the real Perseus Vault binary.
-- **Measured benchmarks, not claims** (`benchmarks/`): recall at **p50 8 ms /
+- **Measured benchmarks, not claims** (`benchmarks/`): recall at **p50 7 ms /
   5-of-5 recall@10 on a 10k-memory corpus**, and a **72.5% context-token
   reduction** over a 30-session horizon vs. re-priming each session — every
   figure measured against the real binary or labeled as a stated assumption.
+- **Validated at 1,000,000 memories** on a 2× H100 run (engine-scale, GPU
+  embedding): **hybrid recall@5 = recall@10 = 1.00** at sub-second p50 latency,
+  0 embedding errors. Reported separately from the laptop numbers and with its
+  caveats stated (semantic workload; keyword-only recall near-zero; sub-second
+  not sub-10ms). Verbatim data in `benchmarks/results/scale_1m_2xh100.json`.
 
 ## What we learned
 

@@ -136,11 +136,18 @@ Measured against the real `perseus-vault` binary (v2.17.0), encrypted at rest �
 full methodology and reproducible harness in [`benchmarks/`](benchmarks/):
 
 - **Recall is fast and accurate at scale.** Seeding 10,000 developer memories,
-  recall runs at **p50 8 ms / p95 13 ms** with **5/5 recall@10** on distinctive
-  needle memories (1,000-memory corpus: p50 1.4 ms). The recall hot path — what a
+  recall runs at **p50 7 ms** (p95 27 ms) with **5/5 recall@10** on distinctive
+  needle memories (1,000-memory corpus: p50 1.3 ms). The recall hot path — what a
   Codex agent hits every task — stays in single/low-double-digit milliseconds.
+- **The engine scales to 1,000,000 memories.** A separate 2× H100 validation
+  (run `#619`, [`results/scale_1m_2xh100.json`](benchmarks/results/scale_1m_2xh100.json))
+  embedded ~1M memories (995,562 persisted, 0 errors) and hit **hybrid recall@5 =
+  recall@10 = 1.00** over 2,000 semantic queries, at sub-second latency (p50
+  479 ms). This is an engine-scale result on GPU, not the laptop path — reported
+  separately and honestly (keyword-only recall is near-zero on that semantic
+  workload; hybrid carries it).
 - **Persistent memory cuts context tokens ~72%.** Over a 30-session horizon,
-  recalling the top-k relevant memories per task uses **110,512 fewer tokens
+  recalling the top-k relevant memories per task uses **110,493 fewer tokens
   (72.5% reduction)** than re-priming each new session with the full project
   knowledge base — per-unit token costs measured with tiktoken against real vault
   recalls.
