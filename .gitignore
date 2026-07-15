@@ -22,3 +22,9 @@ Thumbs.db
 
 # stray test tmp on Windows
 .test-tmp/
+
+# WIP plugin scaffold (not part of the submission)
+plugins/
+
+# demo video is hosted on YouTube/Devpost, not tracked (thumbnail is committed)
+media/*.mp4

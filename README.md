@@ -2,6 +2,8 @@
 
 **Persistent, encrypted, local-first memory for OpenAI Codex agents.**
 
+![Perseus Vault Codex — persistent encrypted memory for Codex](media/thumbnail.png)
+
 > Codex never forgets. Perseus Vault gives your Codex agent persistent encrypted
 > memory — so it remembers your project conventions, past decisions, and
 > debugging context across every session.
@@ -41,7 +43,9 @@ it and any Codex session gains five memory tools:
 
 ```bash
 # 1. Install the wrapper (zero Python dependencies)
-pip install perseus-vault-codex            # from PyPI, or from source (below)
+git clone https://github.com/Perseus-Computing-LLC/perseus-vault-codex
+cd perseus-vault-codex
+pip install -e .
 
 # 2. Install the Perseus Vault binary (single static binary, no deps) and put it on PATH
 #    https://github.com/Perseus-Computing-LLC/perseus-vault/releases
@@ -50,14 +54,8 @@ pip install perseus-vault-codex            # from PyPI, or from source (below)
 perseus-vault-codex-setup
 ```
 
-**Install from source (works today, before the PyPI release):**
-
-```bash
-git clone https://github.com/Perseus-Computing-LLC/perseus-vault-codex
-cd perseus-vault-codex
-pip install -e .
-perseus-vault-codex-setup
-```
+Once published to PyPI, step 1 collapses to a single `pip install perseus-vault-codex`
+(steps 2–3 unchanged).
 
 That's it. On first run the server auto-creates an encrypted vault at
 `~/.perseus-vault/codex/memory.db` — **no config required**.
