@@ -7,7 +7,7 @@
 > debugging context across every session.
 
 [![CI](https://github.com/Perseus-Computing-LLC/perseus-vault-codex/actions/workflows/ci.yml/badge.svg)](https://github.com/Perseus-Computing-LLC/perseus-vault-codex/actions/workflows/ci.yml)
-&nbsp;License: MIT &nbsp;·&nbsp; Built for **OpenAI Build Week** — Developer Tools track
+License: MIT | Built for **OpenAI Build Week** — Developer Tools track
 
 ---
 
