@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/perseus-computing-llc-perseus-vault-codex-badge.png)](https://mseep.ai/app/perseus-computing-llc-perseus-vault-codex)
+
 # Perseus Vault Codex
 
 **Persistent, encrypted, local-first memory for OpenAI Codex agents.**
